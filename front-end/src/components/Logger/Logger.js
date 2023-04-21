@@ -13,13 +13,31 @@ import { userLogOut } from '../Store/Store';
 
 export default function Logger() {
     const isLogged = useSelector((state) => state.isLogged);
+    //const userFirstName = useSelector((state) => state.userFirstName);
+
+    
+    const user = useSelector((state) => state.user);
+    const userFirstName1 = useSelector((state) => state.userFirstName1);
+    const userFirstName2 = useSelector((state) => state.userFirstName2);
+
+    function giveUserFirstname(user) {
+        if(user === 'user1') {
+            return userFirstName1
+        }
+        if(user === 'user2') {
+            return userFirstName2
+        }
+    }
+
+    const userFirstname = giveUserFirstname(user);
+
     const dispatch = useDispatch();
 
     return isLogged ? (
         <div>
             <Link className="main-nav-item" to={'/profile'}>
                 <TbUserCircle />
-                Tony
+                {userFirstname}
             </Link>
             <Link 
                 className="main-nav-item" 

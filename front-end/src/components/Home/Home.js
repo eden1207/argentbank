@@ -3,6 +3,7 @@ import React from 'react'
 import Header from '../Header/Header.js';
 import Footer from '../Footer/Footer.js';
 
+
 import '../../styles/Home/Home.css'
 import iconchat from '../../assets/icon-chat.png'
 import iconmoney from '../../assets/icon-money.png'

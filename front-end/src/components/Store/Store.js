@@ -4,8 +4,26 @@ import { createStore } from "redux";
 
 const initialState = {
   isLogged: false,
-  editName: false,
-  isEdited: false,
+  isEditName: false,
+  user: '',
+
+
+  /*userFirstName1: 'Tony',
+  userSurName1: 'Stark',
+  userFirstName2: 'Steve',
+  userSurName2: 'Rogers',*/
+
+  /*isEditName1: false,
+  isEditName2: false,*/
+
+  userFirstName1: '',
+  userSurName1: '',
+  userFirstName2: '',
+  userSurName2: '',
+
+  /*isUserUpDate: false,*/
+  isUserUpDate1: false,
+  isUserUpDate2: false,
 };
 
 // actions creators
@@ -14,25 +32,76 @@ export const userLogIn = () => ({ type: "userLogIn" });
 
 export const userLogOut = () => ({ type: "userLogOut" });
 
-export const userEditName = () => ({ type: "userEditName" });
 
-export const userSaveEditName = () => ({ type: "userSaveEditName" });
+export const changeUser = (user) => ({ 
+  type: "changeUser",
+  user: user, 
+});
 
-export const userCancelEditName = () => ({ type: "userCancelEditName" });
 
-/*export const userName = () => ({ 
-  type1: "userName1",
-  type2: "userName2" 
+
+
+/*export const displayUsername = (firstname, surname, user) => ({ 
+  type: "displayUsername",
+  firstname: firstname, 
+  surname: surname,
+  user: user,
 });*/
+
+export const displayUsername1 = (firstname, surname, user) => ({ 
+  type: "displayUsername1",
+  firstname: firstname, 
+  surname: surname,
+  user: user,
+});
+
+export const displayUsername2 = (firstname, surname, user) => ({ 
+  type: "displayUsername2",
+  firstname: firstname, 
+  surname: surname,
+  user: user,
+});
+
+
+
+
+
+export const userEditMode = () => ({ 
+  type: "userEditMode",
+  value: true, 
+});
+
+export const userNoEditMode = () => ({ type: "userNoEditMode" });
+
+
+
+
+
+export const usernameUpDate = (firstname, surname, user) => ({ 
+  type: "usernameUpDate",
+  userFirstname: firstname,
+  userSurname: surname,
+  user: user,
+});
+
+
+
+
+
+
+
+
 
 
 function reducer(state = initialState, action) {
+
   if (action.type === "userLogIn") {
     return {
       ...state,
       isLogged: true,
     };
   }
+
   if (action.type === "userLogOut") {
     return {
       ...state,
@@ -40,27 +109,142 @@ function reducer(state = initialState, action) {
     };
   }
 
-  if (action.type === "userEditName") {
+
+
+
+  /*if (action.type === "displayUsername") {
+    const firstname = action.firstname;
+    const surname = action.surname;
+    if (action.user === 'user1') {
+      return {
+        ...state,
+        userFirstName1: firstname,
+        userSurName1: surname,
+      };
+    }
+    if (action.user === 'user2') {
+      return {
+        ...state,
+        userFirstName2: firstname,
+        userSurName2: surname,
+      };
+    }
+  }*/
+
+  if (action.type === "displayUsername1") {
+    const firstname = action.firstname;
+    const surname = action.surname;
+
     return {
       ...state,
-      editName: true,
+      user: action.user,
+      userFirstName1: firstname,
+      userSurName1: surname,
+    };
+  }
+
+  if (action.type === "displayUsername2") {
+    const firstname = action.firstname;
+    const surname = action.surname;
+
+    return {
+      ...state,
+      user: action.user,
+      userFirstName2: firstname,
+      userSurName2: surname,
+    };
+  }
+
+
+
+
+
+  if (action.type === "changeUser") {
+    const user = action.user;
+    return {
+      ...state,
+      user: user,
+    };
+  }
+
+  if (action.type === "userEditMode") {
+    return {
+      ...state,
+      isEditName: true,
     }
   }
 
-  if (action.type === "userSaveEditName") {
+  if (action.type === "userNoEditMode") {
     return {
       ...state,
-      editName: false,
-      isEdited: true,
+      isEditName: false,
     }
   }
 
-  if (action.type === "userCancelEditName") {
+
+
+
+
+
+  /*if (action.type === "usernameUpDate") {
+    const userFirstname = action.userFirstname;
+    const userSurname = action.userSurname;
     return {
       ...state,
-      editName: false,
+      isUserUpDate: true,
+      userFirstName1: userFirstname,
+      userSurName1: userSurname,
+    }
+  }*/
+
+  if (action.type === "usernameUpDate") {
+    const userFirstname = action.userFirstname;
+    const userSurname = action.userSurname;
+    if (action.user === 'user1') {
+      return {
+        ...state,
+        /*isUserUpDate: true,*/
+        isUserUpDate1: true,
+        userFirstName1: userFirstname,
+        userSurName1: userSurname,
+      };
+    }
+    if (action.user === 'user2') {
+      return {
+        ...state,
+        /*isUserUpDate: true,*/
+        isUserUpDate2: true,
+        userFirstName2: userFirstname,
+        userSurName2: userSurname,
+      };
     }
   }
+
+
+
+  /*if (action.type === "usernameUpDate") {
+    const firstname = action.userFirstname;
+    const surname = action.userSurname;
+    if (action.user === 'user1') {
+      return {
+        ...state,
+        isUserUpDate: true,
+        userFirstName1: firstname,
+        userSurName1: surname,
+      };
+    }
+    if (action.user === 'user2') {
+      return {
+        ...state,
+        isUserUpDate: true,
+        userFirstName2: firstname,
+        userSurName2: surname,
+      };
+    }
+  }*/
+
+
+
   return state;
 }
 

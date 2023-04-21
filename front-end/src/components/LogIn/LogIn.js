@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useDispatch } from "react-redux";
-import { userLogIn, userLogOut } from "../Store/Store.js";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogIn, displayUsername1, displayUsername2 } from "../Store/Store.js";
 
 import Header from '../Header/Header.js';
 import Footer from '../Footer/Footer.js';
@@ -10,8 +10,9 @@ import '../../styles/Home/Home.css'
 import { TbUserCircle } from "react-icons/tb";
 
 import { Link } from 'react-router-dom'
+import GiveUsersData from '../../service/GiveUsersData.js';
 
-function switchLoginState(username, password, dispatch) {
+/*function switchLoginState(username, password, userFirstName, userSurName) {
     const users = [
         {
             'firstName': 'Tony',
@@ -26,23 +27,70 @@ function switchLoginState(username, password, dispatch) {
             'password': 'password456'
         }
     ];
-    
-    /*users.forEach((user) => {
-        if(username === user.firstName && password === user.password) {
-            return dispatch(userLogIn());
-        } else{
-            return dispatch(userLogOut());
-        }
-    });*/
 
-    if(username === users[0].firstName && password === users[0].password) {
-        return dispatch(userLogIn());
-    } else if(username === users[1].firstName && password === users[1].password) {
-        return dispatch(userLogIn());
+    const condition1 = username === users[0].firstName && password === users[0].password;
+    const condition2 = username === users[1].firstName && password === users[1].password;
+
+    if(condition1) {
+        return userLogIn(userFirstName, userSurName);
+    } else if(condition2) {
+        return userLogIn(userFirstName, userSurName);
     }else{
-        return dispatch(userLogOut());
+        return userLogOut();
     }
-}
+}*/
+
+/*function switchUserName(username, password, isUserUpDate, userFirstName, userSurName, user) {
+    const users = [
+        {
+            'firstName': 'Tony',
+            'lastName': 'Stark',
+            'email': 'tony@stark.com',
+            'password': 'password123'
+        },
+        {
+            'firstName': 'Steve',
+            'lastName': 'Rogers',
+            'email': 'steve@rogers.com',
+            'password': 'password456'
+        }
+    ];
+
+    const condition1 = username === users[0].firstName && password === users[0].password;
+    const condition2 = username === users[1].firstName && password === users[1].password;*/
+
+
+    
+    /*function giveUser(condition) {
+        if(condition === condition1) {
+            dispatch(changeUser('user1'))
+        }
+        if(condition === condition2) {
+            dispatch(changeUser('user2'))
+        }
+    }*/
+
+
+
+
+
+
+    /*if(!isUserUpDate) {
+        if(user === 'user1') {
+            return userLogIn('Tony', 'Stark', user);
+        }
+        if(user === 'user2') {
+            return userLogIn('Steve', 'Rogers', user);
+        }
+    } else {
+        if(user === 'user1') {
+            return userLogIn(userFirstName, userSurName, user);
+        }
+        if(user === 'user2') {
+            return userLogIn(userFirstName, userSurName, user);
+        }
+    }
+}*/
 
 function changePath(username, password) {
     const users = [
@@ -60,20 +108,13 @@ function changePath(username, password) {
         }
     ];
 
-    /*users.forEach((user) => {
-        if(username === user.firstName && password === user.password) {
-            console.log('profile')
-            return '/profile'
-        } else{
-            console.log('login')
-            return '/login'
-        }
-    });*/
+    const condition1 = username === users[0].firstName && password === users[0].password;
+    const condition2 = username === users[1].firstName && password === users[1].password;
 
-    if(username === users[0].firstName && password === users[0].password) {
-        return '/profile/tonystark'
-    } else if(username === users[1].firstName && password === users[1].password) {
-        return '/profile/steverogers'
+    if(condition1) {
+        return '/profile'
+    } else if(condition2) {
+        return '/profile'
     }else{
         return '/login'
     }
@@ -83,20 +124,23 @@ function changePath(username, password) {
 export default function LogIn() {
     const dispatch = useDispatch();
 
+    let user = '';
+
+    const userFirstName1 = useSelector((state) => state.userFirstName1);
+    const userSurName1 = useSelector((state) => state.userSurName1);
+    const isUserUpDate1 = useSelector((state) => state.isUserUpDate1);
+
+    const userFirstName2 = useSelector((state) => state.userFirstName2);
+    const userSurName2 = useSelector((state) => state.userSurName2);
+    const isUserUpDate2 = useSelector((state) => state.isUserUpDate2);
+
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
-
-    function getUsername(e) {
-        setUsername(e.target.value)
-    }
-
-    function getPassword(e) {
-        setPassword(e.target.value)
-    }
 
     return(
         <div className='html'>
           <div className='body'>
+                <GiveUsersData />
                 <Header />
                 <main className="main bg-dark">
                     <section className="sign-in-content">
@@ -105,11 +149,11 @@ export default function LogIn() {
                         <form>
                             <div className="input-wrapper">
                                 <label htmlFor="username">Username</label>
-                                <input type="text" id="username" onChange={getUsername} />
+                                <input type="text" id="username" onChange={(e) => {setUsername(e.target.value)}} />
                             </div>
                             <div className="input-wrapper">
                                 <label htmlFor="password">Password</label>
-                                <input type="password" id="password" onChange={getPassword} />
+                                <input type="password" id="password" onChange={(e) => {setPassword(e.target.value)}} />
                             </div>
                             <div className="input-remember">
                                 <input type="checkbox" id="remember-me" />
@@ -118,7 +162,55 @@ export default function LogIn() {
                             <Link 
                                 className="sign-in-button"
                                 onClick={() => {
-                                    switchLoginState(username, password, dispatch)
+
+                                    const users = [
+                                        {
+                                            'firstName': 'Tony',
+                                            'lastName': 'Stark',
+                                            'email': 'tony@stark.com',
+                                            'password': 'password123'
+                                        },
+                                        {
+                                            'firstName': 'Steve',
+                                            'lastName': 'Rogers',
+                                            'email': 'steve@rogers.com',
+                                            'password': 'password456'
+                                        }
+                                    ];
+                                
+                                    const condition1 = username === users[0].firstName && password === users[0].password;
+                                    const condition2 = username === users[1].firstName && password === users[1].password;
+
+
+                                    if(condition1) {
+                                        /*dispatch(changeUser('user1'))*/
+                                        user = 'user1';
+                                    } else if(condition2) {
+                                        /*dispatch(changeUser('user2'))*/
+                                        user = 'user2';
+                                    } else{
+                                        console.log('Unknown user')
+                                    }
+
+
+                                    if(user === 'user1') {
+                                        dispatch(userLogIn())
+                                        if(!isUserUpDate1) {
+                                            dispatch(displayUsername1('Tony', 'Stark', user));
+                                        } else{
+                                            dispatch(displayUsername1(userFirstName1, userSurName1, user));
+                                        }
+                                    } else if(user === 'user2') {
+                                        dispatch(userLogIn())
+                                        if(!isUserUpDate2) {
+                                            dispatch(displayUsername2('Steve', 'Rogers', user));
+                                        } else {
+                                            dispatch(displayUsername2(userFirstName2, userSurName2, user));
+                                        }
+                                    } else{
+                                        console.log('Unknown user')
+                                    }
+
                                 }}
                                 to={changePath(username, password)}
                             >
@@ -129,7 +221,7 @@ export default function LogIn() {
                                 className="sign-in-button"       
                                 onClick={(e) => {
                                     e.preventDefault();
-                                    dispatch(userLogIn());
+                                    /*dispatch(userLogIn());*/
                                 }}
                             >
                                 Sign In

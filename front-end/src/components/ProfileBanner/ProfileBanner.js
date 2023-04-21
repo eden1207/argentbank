@@ -1,89 +1,76 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import { userEditName } from '../Store/Store';
-import { userSaveEditName } from '../Store/Store';
-import { userCancelEditName } from '../Store/Store';
-
-function giveUserName(id) {
-    if(id === 'tonystark') {
-        return 'Tony Stark'
-    } else if(id === 'steverogers') {
-        return 'Steve Rogers'
-    } else{
-        return ''
-    }
-}
-
-function giveSavedName(newFirstname, newSurname) {
-    return newFirstname + ' ' + newSurname
-}
-
-function saveFirstname(word) {
-    let tab = 'Tony';
-    tab = word;
-    //tab.push(word)
-    return tab
-}
-
-function saveSurname(word) {
-    let tab = 'Stark';
-    tab = word;
-    //tab.push(word)
-    return tab
-}
-
-
-
-
+import { userEditMode, userNoEditMode, usernameUpDate } from '../Store/Store';
 
 
 export default function ProfileBanner() {
-    const { id } = useParams();
-    const editName = useSelector((state) => state.editName);
     const dispatch = useDispatch();
-
-    const [newFirstname, setNewFirstname] = useState(null);
-    const [newSurname, setNewSurname] = useState(null);
-
-    function getNewFirstname(e) {
-        setNewFirstname(e.target.value)
-    }
     
-    function getNewSurname(e) {
-        setNewSurname(e.target.value)
+    const isEditName = useSelector((state) => state.isEditName);
+
+    const user = useSelector((state) => state.user);
+
+    const userFirstName1 = useSelector((state) => state.userFirstName1);
+    const userSurName1 = useSelector((state) => state.userSurName1);
+
+    const userFirstName2 = useSelector((state) => state.userFirstName2);
+    const userSurName2 = useSelector((state) => state.userSurName2);
+
+    function giveUserFirstname(user) {
+        if(user === 'user1') {
+            return userFirstName1
+        }
+        if(user === 'user2') {
+            return userFirstName2
+        }
     }
 
-    function PageTitle() {
-        const isEdited = useSelector((state) => state.isEdited);
-        const neFirstname = saveFirstname(newFirstname);
-        const neSurname = saveSurname(newSurname);
-    
-        return isEdited ? (
-            <React.Fragment>
-                <h1>Welcome back<br />{giveSavedName(neFirstname, neSurname)} !</h1>
-            </React.Fragment>
-        ) : (
-            <React.Fragment>
-                <h1>Welcome back<br />{giveUserName(id)} !</h1>
-            </React.Fragment>
-        )
+    function giveUserSurname(user) {
+        if(user === 'user1') {
+            return userSurName1
+        }
+        if(user === 'user2') {
+            return userSurName2
+        }
     }
 
-    return editName ? (
+    const userSurname = giveUserSurname(user);
+    const userFirstname = giveUserFirstname(user);
+
+    const [inputfirstname, setInputFirstname] = useState(null);
+    const [inputsurname, setInputSurname] = useState(null);
+
+    return isEditName ? (
         <div>
             <h1>Welcome back</h1>
             <div>
                 <div>
-                    <input type="text" id="newfirstname" onChange={getNewFirstname} />
-                    <input type="text" id="newsurname" onChange={getNewSurname} />
+                    <input type="text" id="newfirstname" onChange={(e) => {setInputFirstname(e.target.value)}} />
+                    <input type="text" id="newsurname" onChange={(e) => {setInputSurname(e.target.value)}} />
                 </div>
                 <div>
                     <button 
                         className="save-button"
                         onClick={(e) => {
                             e.preventDefault();
-                            dispatch(userSaveEditName());
+
+                            /*updateFirstname(inputfirstname);
+                            updateSurname(inputsurname);*/
+
+                            dispatch(userNoEditMode());
+                            dispatch(usernameUpDate(inputfirstname, inputsurname, user));
+
+                            /*if(user === 'user1') {
+                                dispatch(userNoEditMode1());
+                                dispatch(usernameUpDate(inputfirstname, inputsurname, user));
+                            } else if(user === 'user2') {
+                                dispatch(userNoEditMode2());
+                                dispatch(usernameUpDate(inputfirstname, inputsurname, user));
+                            } else{
+                                console.log('Unknown user')
+                            }*/
+
+                            /*dispatch(nameLogger(inputfirstname));*/
                         }}
                     >
                         Save
@@ -92,7 +79,14 @@ export default function ProfileBanner() {
                         className="cancel-button"
                         onClick={(e) => {
                             e.preventDefault();
-                            dispatch(userCancelEditName());
+                            dispatch(userNoEditMode());
+                            /*if(user === 'user1') {
+                                dispatch(userNoEditMode1());
+                            } else if(user === 'user2') {
+                                dispatch(userNoEditMode2());
+                            } else{
+                                console.log('Unknown user')
+                            }*/
                         }}
                     >
                         Cancel
@@ -102,12 +96,12 @@ export default function ProfileBanner() {
         </div>
     ) : (
         <div className="header">
-            <PageTitle />
+            <h1>Welcome back<br />{userFirstname + ' ' + userSurname} !</h1>
             <button 
                 className="edit-button"
                 onClick={(e) => {
                     e.preventDefault();
-                    dispatch(userEditName());
+                    dispatch(userEditMode());
                 }}
             >
                 Edit Name
