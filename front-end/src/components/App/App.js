@@ -3,9 +3,8 @@ import {Routes, Route } from 'react-router-dom';
 
 import Home from '../Home/Home.js';
 import LogIn from '../LogIn/LogIn.js';
-import Profile from '../Profile/Profile.js';
-
-//import Test from '../Test/Test.js';
+//import Profile from '../Profile/Profile.js';
+import GiveUsersData from '../../service/GiveUsersData.js';
 
 function App() {
   return (
@@ -13,7 +12,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/login' element={<LogIn />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profile' element={<GiveUsersData />} />
       </Routes>
     </div>
   );

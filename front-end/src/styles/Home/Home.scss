@@ -117,15 +117,17 @@
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
-  
+
 .sign-in-button {
     display: block;
-    width: 100%;
+    width: 93%;
+    height: 25px;
     padding: 8px;
     font-size: 1.1rem;
     font-weight: bold;
     margin-top: 1rem;
-    border-color: #00bc77;
+    text-decoration: none;
+    box-shadow: inset -2px -2px 0px darken(#00bc77, 15%);
     background-color: #00bc77;
     color: #fff;
 }
@@ -203,6 +205,37 @@
     width: 100%;
     flex: 1;
 }
+
+.edit-tab{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.edit-inputs{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 2%;
+}
+
+.edit-inputs input {
+    padding: 5px;
+    font-size: 1.2rem;
+}
+
+.edit-buttons{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 2%;
+}
   
 .edit-button {
     border-color: #00bc77;
@@ -210,6 +243,24 @@
     color: #fff;
     font-weight: bold;
     padding: 10px;
+}
+
+.save-button {
+    border-color: #00bc77;
+    background-color: #00bc77;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    width: 80px;
+}
+
+.cancel-button {
+    border-color: #00bc77;
+    background-color: #00bc77;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px;
+    width: 80px;
 }
   
 .header {

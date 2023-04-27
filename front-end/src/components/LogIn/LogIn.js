@@ -1,146 +1,80 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from "react-redux";
-import { userLogIn, displayUsername1, displayUsername2 } from "../Store/Store.js";
+import { useDispatch } from "react-redux";
+import { userLogIn, displayUsername, changeUserNames } from "../Store/Store.js";
+import { Link } from 'react-router-dom'
 
 import Header from '../Header/Header.js';
 import Footer from '../Footer/Footer.js';
 
 import '../../styles/Home/Home.css'
-
 import { TbUserCircle } from "react-icons/tb";
 
-import { Link } from 'react-router-dom'
-import GiveUsersData from '../../service/GiveUsersData.js';
-
-/*function switchLoginState(username, password, userFirstName, userSurName) {
-    const users = [
-        {
-            'firstName': 'Tony',
-            'lastName': 'Stark',
-            'email': 'tony@stark.com',
-            'password': 'password123'
-        },
-        {
-            'firstName': 'Steve',
-            'lastName': 'Rogers',
-            'email': 'steve@rogers.com',
-            'password': 'password456'
-        }
-    ];
-
-    const condition1 = username === users[0].firstName && password === users[0].password;
-    const condition2 = username === users[1].firstName && password === users[1].password;
-
-    if(condition1) {
-        return userLogIn(userFirstName, userSurName);
-    } else if(condition2) {
-        return userLogIn(userFirstName, userSurName);
-    }else{
-        return userLogOut();
-    }
-}*/
-
-/*function switchUserName(username, password, isUserUpDate, userFirstName, userSurName, user) {
-    const users = [
-        {
-            'firstName': 'Tony',
-            'lastName': 'Stark',
-            'email': 'tony@stark.com',
-            'password': 'password123'
-        },
-        {
-            'firstName': 'Steve',
-            'lastName': 'Rogers',
-            'email': 'steve@rogers.com',
-            'password': 'password456'
-        }
-    ];
-
-    const condition1 = username === users[0].firstName && password === users[0].password;
-    const condition2 = username === users[1].firstName && password === users[1].password;*/
 
 
-    
-    /*function giveUser(condition) {
-        if(condition === condition1) {
-            dispatch(changeUser('user1'))
-        }
-        if(condition === condition2) {
-            dispatch(changeUser('user2'))
-        }
-    }*/
-
-
-
-
-
-
-    /*if(!isUserUpDate) {
-        if(user === 'user1') {
-            return userLogIn('Tony', 'Stark', user);
-        }
-        if(user === 'user2') {
-            return userLogIn('Steve', 'Rogers', user);
-        }
-    } else {
-        if(user === 'user1') {
-            return userLogIn(userFirstName, userSurName, user);
-        }
-        if(user === 'user2') {
-            return userLogIn(userFirstName, userSurName, user);
-        }
-    }
-}*/
 
 function changePath(username, password) {
-    const users = [
-        {
-            'firstName': 'Tony',
-            'lastName': 'Stark',
-            'email': 'tony@stark.com',
-            'password': 'password123'
-        },
-        {
-            'firstName': 'Steve',
-            'lastName': 'Rogers',
-            'email': 'steve@rogers.com',
-            'password': 'password456'
-        }
-    ];
+    const condition1 = username === "Tony" && password === "password123";
+    const condition2 = username === "Steve" && password === "password456";
 
-    const condition1 = username === users[0].firstName && password === users[0].password;
-    const condition2 = username === users[1].firstName && password === users[1].password;
-
-    if(condition1) {
+    if(condition1 || condition2) {
         return '/profile'
-    } else if(condition2) {
-        return '/profile'
-    }else{
+    } else{
         return '/login'
     }
 }
 
 
+function userIdentify(username, password) {
+    let email = '';
+    if(username === "Tony" && password === "password123") {
+      email = 'tony@stark.com';
+    } else if(username === "Steve" && password === "password456"){
+      email = 'steve@rogers.com';
+    } else{
+      console.log('Unknown user')
+    }
+    return fetch('http://localhost:3001/api/v1/user/login', {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: `{"email": "${email}", "password": "${password}"}`
+    })
+  }
+
+  function applyToken(token) {
+    return fetch('http://localhost:3001/api/v1/user/profile', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json", "Authorization": "Bearer " + token}
+    })
+  }
+
+
+
+
 export default function LogIn() {
     const dispatch = useDispatch();
-
-    let user = '';
-
-    const userFirstName1 = useSelector((state) => state.userFirstName1);
-    const userSurName1 = useSelector((state) => state.userSurName1);
-    const isUserUpDate1 = useSelector((state) => state.isUserUpDate1);
-
-    const userFirstName2 = useSelector((state) => state.userFirstName2);
-    const userSurName2 = useSelector((state) => state.userSurName2);
-    const isUserUpDate2 = useSelector((state) => state.isUserUpDate2);
-
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
+
+    function giveUserFirstName(username, password) {
+
+        userIdentify(username, password)
+          .then(res => res.json())
+          .then(
+            (result) => {
+                const token = result.body.token;
+                applyToken(token)
+                    .then(res => res.json())
+                    .then((result) => {
+                        dispatch(changeUserNames(result.body.firstName, ''))
+                    })
+            })
+    }
+
 
     return(
         <div className='html'>
           <div className='body'>
-                <GiveUsersData />
+                
                 <Header />
                 <main className="main bg-dark">
                     <section className="sign-in-content">
@@ -162,72 +96,14 @@ export default function LogIn() {
                             <Link 
                                 className="sign-in-button"
                                 onClick={() => {
-
-                                    const users = [
-                                        {
-                                            'firstName': 'Tony',
-                                            'lastName': 'Stark',
-                                            'email': 'tony@stark.com',
-                                            'password': 'password123'
-                                        },
-                                        {
-                                            'firstName': 'Steve',
-                                            'lastName': 'Rogers',
-                                            'email': 'steve@rogers.com',
-                                            'password': 'password456'
-                                        }
-                                    ];
-                                
-                                    const condition1 = username === users[0].firstName && password === users[0].password;
-                                    const condition2 = username === users[1].firstName && password === users[1].password;
-
-
-                                    if(condition1) {
-                                        /*dispatch(changeUser('user1'))*/
-                                        user = 'user1';
-                                    } else if(condition2) {
-                                        /*dispatch(changeUser('user2'))*/
-                                        user = 'user2';
-                                    } else{
-                                        console.log('Unknown user')
-                                    }
-
-
-                                    if(user === 'user1') {
-                                        dispatch(userLogIn())
-                                        if(!isUserUpDate1) {
-                                            dispatch(displayUsername1('Tony', 'Stark', user));
-                                        } else{
-                                            dispatch(displayUsername1(userFirstName1, userSurName1, user));
-                                        }
-                                    } else if(user === 'user2') {
-                                        dispatch(userLogIn())
-                                        if(!isUserUpDate2) {
-                                            dispatch(displayUsername2('Steve', 'Rogers', user));
-                                        } else {
-                                            dispatch(displayUsername2(userFirstName2, userSurName2, user));
-                                        }
-                                    } else{
-                                        console.log('Unknown user')
-                                    }
-
+                                    dispatch(userLogIn());
+                                    dispatch(displayUsername(username, password));
+                                    dispatch(changeUserNames(giveUserFirstName(username, password), ''));
                                 }}
                                 to={changePath(username, password)}
                             >
                                 Sign In
                             </Link>
-
-                            <button 
-                                className="sign-in-button"       
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    /*dispatch(userLogIn());*/
-                                }}
-                            >
-                                Sign In
-                            </button>
-
-
                         </form>
                     </section>
                 </main>
@@ -236,24 +112,3 @@ export default function LogIn() {
         </div>
     )
 }
-
-/*
-          <!-- PLACEHOLDER DUE TO STATIC SITE -->
-          <a href="./user.html" class="sign-in-button">Sign In</a>
-          <!-- SHOULD BE THE BUTTON BELOW -->
-          <!-- <button class="sign-in-button">Sign In</button> -->
-          <!--  -->
- */
-
-
-          /**
-           *                             <button 
-                                className="sign-in-button"       
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    dispatch(userLogIn());
-                                }}
-                            >
-                                Sign In
-                            </button>
-           */

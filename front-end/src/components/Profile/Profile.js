@@ -42,13 +42,13 @@ function Account({ data }) {
     )
 }
 
-export default function Profile() {
+export default function Profile({ userData }) {
     return(
         <div className='html'>
           <div className='body'>
                 <Header />
                 <main className="main bg-dark">
-                    <ProfileBanner />
+                    <ProfileBanner userData={userData} />
                     <h2 className="sr-only">Accounts</h2>
                     {
                         accountData.map((data) => (

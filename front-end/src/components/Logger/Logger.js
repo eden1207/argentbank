@@ -8,41 +8,27 @@ import { TbUserCircle } from "react-icons/tb";
 import { FaSignOutAlt } from "react-icons/fa";
 
 import { Link } from 'react-router-dom'
-import { userLogOut } from '../Store/Store';
+import { userLogOut, switchUpDate } from '../Store/Store';
 
 
 export default function Logger() {
     const isLogged = useSelector((state) => state.isLogged);
-    //const userFirstName = useSelector((state) => state.userFirstName);
-
-    
-    const user = useSelector((state) => state.user);
-    const userFirstName1 = useSelector((state) => state.userFirstName1);
-    const userFirstName2 = useSelector((state) => state.userFirstName2);
-
-    function giveUserFirstname(user) {
-        if(user === 'user1') {
-            return userFirstName1
-        }
-        if(user === 'user2') {
-            return userFirstName2
-        }
-    }
-
-    const userFirstname = giveUserFirstname(user);
 
     const dispatch = useDispatch();
 
+    const userFirstName = useSelector((state) => state.userFirstName);
+
     return isLogged ? (
-        <div>
+        <div className='signout-design'>
             <Link className="main-nav-item" to={'/profile'}>
                 <TbUserCircle />
-                {userFirstname}
+                {userFirstName}
             </Link>
             <Link 
                 className="main-nav-item" 
                 onClick={() => {
                     dispatch(userLogOut());
+                    dispatch(switchUpDate(false));
                 }}
                 to={'/'}
             >

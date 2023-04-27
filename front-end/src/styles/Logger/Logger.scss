@@ -10,3 +10,24 @@
     align-items: center;
     text-decoration: underline;
 }
+
+.signout-design{
+    @media all and (min-width: 992px) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 17%;
+        gap: 5%;
+        padding-left: 3%;
+    }
+    @media all and (min-width: 768px) and (max-width: 991px) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 25%;
+        gap: 5%;
+    }
+    @media all and (max-width: 767px) {
+        width: 30%;
+    }
+}
