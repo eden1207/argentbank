@@ -1,9 +1,9 @@
-import React from 'react'
-
+import React, {useEffect} from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../Store/Store.js";
 import Header from '../Header/Header.js';
 import Footer from '../Footer/Footer.js';
 import ProfileBanner from '../ProfileBanner/ProfileBanner.js';
-
 import '../../styles/Home/Home.css'
 
 const accountData = [
@@ -42,27 +42,42 @@ function Account({ data }) {
     )
 }
 
-export default function Profile({ userData }) {
+function applyToken(token) {
+    return fetch(process.env.REACT_APP_PORT + '/user/profile', {
+      method: 'POST',
+      headers: {"Content-Type": "application/json", "Authorization": "Bearer " + token}
+    })
+}
+
+export default function Profile() {
+    const dispatch = useDispatch();
+    const userToken = useSelector((state) => state.userToken);
+
+    useEffect(() => {
+
+        applyToken(userToken)
+          .then(res => res.json())
+          .then(
+            (result) => {
+                dispatch(setUserData(result.body.email, result.body.id, result.body.firstName, result.body.lastName))
+            }
+        )
+  
+    }, [dispatch, userToken])
+
     return(
-        <div className='html'>
-          <div className='body'>
-                <Header />
-                <main className="main bg-dark">
-                    <ProfileBanner userData={userData} />
-                    <h2 className="sr-only">Accounts</h2>
-                    {
-                        accountData.map((data) => (
-                            <Account key={data.id} data={data} />
-                        ))
-                    }
-                </main>
-                <Footer />
-          </div>
+        <div className='html body'>
+            <Header />
+            <main className="main bg-dark">
+                <ProfileBanner />
+                <h2 className="sr-only">Accounts</h2>
+                {
+                    accountData.map((data) => (
+                        <Account key={data.id} data={data} />
+                    ))
+                }
+            </main>
+            <Footer />
         </div>
     )
 }
-
-
-/**
- * <h1>Welcome back<br />Tony Jarvis!</h1>
- */

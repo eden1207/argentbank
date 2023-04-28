@@ -5,50 +5,68 @@ import { createStore } from "redux";
 const initialState = {
   isLogged: false,
   isEditName: false,
-
-  username: '',
-  password: '',
-
+  isAuthorized: null,
+  userEmail: '',
+  userPassword: '',
+  userId: '',
+  userToken: '',
   userFirstName: '',
-  userSurName: '',
-
+  userLastName: '',
+  userFistNameEdited: '',
+  userLastNameEdited: '',
   upDate: false,
 };
 
 // actions creators
 
+/**ok */
 export const userLogIn = () => ({ type: "userLogIn" });
 
+/**ok */
 export const userLogOut = () => ({ type: "userLogOut" });
 
 
+/**ok */
 export const switchUpDate = (upDate) => ({ 
   type: "switchUpDate",
   upDate: upDate, 
 });
 
-
-export const displayUsername = (username, password) => ({ 
-  type: "displayUsername",
-  username: username, 
-  password: password,
-});
-
-export const changeUserNames = (userFirstName, userSurName) => ({ 
+/**ok */
+export const changeUserNames = (userFirstNameEdited, userLastNameEdited) => ({ 
   type: "changeUserNames",
-  userFirstName: userFirstName, 
-  userSurName: userSurName,
+  userFirstNameEdited: userFirstNameEdited, 
+  userLastNameEdited: userLastNameEdited,
 });
 
-
+/**ok */
 export const userEditMode = () => ({ type: "userEditMode" });
 
+/**ok */
 export const userNoEditMode = () => ({ type: "userNoEditMode" });
 
+/**ok */
+export const setUserToken = (userToken) => ({ 
+  type: "setUserToken",
+  userToken: userToken, 
+});
 
+/**ok */
+export const setIsAuthorized = (isAuthorized) => ({ 
+  type: "setIsAuthorized",
+  isAuthorized: isAuthorized, 
+});
+
+/**ok */
+export const setUserData = (userEmail, userId, userFirstName, userLastName) => ({ 
+  type: "setUserData",
+  userEmail: userEmail, 
+  userId: userId,
+  userFirstName: userFirstName,
+  userLastName: userLastName,
+});
 
 function reducer(state = initialState, action) {
-
   if (action.type === "userLogIn") {
     return {
       ...state,
@@ -63,33 +81,47 @@ function reducer(state = initialState, action) {
     };
   }
 
-
-
-  if (action.type === "displayUsername") {
-    const username = action.username;
-    const password = action.password;
-
-    return {
-      ...state,
-      username: username,
-      password: password,
-    };
-  }
-
   if (action.type === "changeUserNames") {
-    const userFirstName = action.userFirstName;
-    const userSurName = action.userSurName;
+    const userFirstNameEdited = action.userFirstNameEdited;
+    const userLastNameEdited = action.userLastNameEdited;
 
     return {
       ...state,
-      userFirstName: userFirstName,
-      userSurName: userSurName,
+      userFirstNameEdited: userFirstNameEdited,
+      userLastNameEdited: userLastNameEdited,
     };
   }
 
+  if (action.type === "setUserToken") {
+    const userToken = action.userToken;
+    return {
+      ...state,
+      userToken: userToken,
+    };
+  }
 
+  if (action.type === "setIsAuthorized") {
+    const isAuthorized = action.isAuthorized;
+    return {
+      ...state,
+      isAuthorized: isAuthorized,
+    };
+  }
 
+  if (action.type === "setUserData") {
+    const userEmail = action.userEmail;
+    const userId = action.userId;
+    const userFirstName = action.userFirstName;
+    const userLastName = action.userLastName;
 
+    return {
+      ...state,
+      userEmail: userEmail,
+      userId: userId,
+      userFirstName: userFirstName,
+      userLastName: userLastName,
+    };
+  }
 
   if (action.type === "switchUpDate") {
     const upDate = action.upDate;

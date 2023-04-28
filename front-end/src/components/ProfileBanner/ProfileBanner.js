@@ -1,16 +1,41 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
-import { userEditMode, userNoEditMode, changeUserNames, switchUpDate } from '../Store/Store';
+import { userEditMode, userNoEditMode, changeUserNames, switchUpDate, setUserData } from '../Store/Store';
 
 
-export default function ProfileBanner({ userData }) {
+function putUpDateData(firstname, surname, token) {
+    return fetch(process.env.REACT_APP_PORT + '/user/profile', {
+      method: 'PUT',
+      headers: {"Content-Type": "application/json", "Authorization": "Bearer " + token},
+      body: `{"firstName": "${firstname}", "lastName": "${surname}"}`
+    })
+}
+
+export default function ProfileBanner() {
     const dispatch = useDispatch();
-    //dispatch(changeUserNames(userData.firstName, userData.lastName));
-    
+    const userFirstNameEdited = useSelector((state) => state.userFirstNameEdited);
+    const userLastNameEdited = useSelector((state) => state.userLastNameEdited);
+    const userFirstName = useSelector((state) => state.userFirstName);
+    const userLastName = useSelector((state) => state.userLastName);
+    const userToken = useSelector((state) => state.userToken);
+    const upDate = useSelector((state) => state.upDate);
     const isEditName = useSelector((state) => state.isEditName);
+    const [inputfirstname, setInputFirstname] = useState('');
+    const [inputsurname, setInputSurname] = useState('');
 
-    const [inputfirstname, setInputFirstname] = useState(null);
-    const [inputsurname, setInputSurname] = useState(null);
+    useEffect(() => {
+
+        if(upDate) {
+            putUpDateData(userFirstNameEdited, userLastNameEdited, userToken)
+            .then(res => res.json())
+            .then(
+              (result) => {
+                  dispatch(setUserData(result.body.email, result.body.id, result.body.firstName, result.body.lastName))
+              }
+          )
+        }
+  
+    }, [dispatch, userFirstNameEdited, userLastNameEdited, userToken, upDate])
 
     return isEditName ? (
         <div>
@@ -25,8 +50,12 @@ export default function ProfileBanner({ userData }) {
                         className="save-button"
                         onClick={(e) => {
                             e.preventDefault();
-                            dispatch(changeUserNames(inputfirstname, inputsurname))
-                            dispatch(switchUpDate(true));
+                            if(inputfirstname.length > 0 && inputsurname.length > 0) {
+                                dispatch(changeUserNames(inputfirstname, inputsurname))
+                                dispatch(switchUpDate(true));
+                            } else{
+                                dispatch(switchUpDate(false));
+                            }
                             dispatch(userNoEditMode());
                         }}
                     >
@@ -36,7 +65,6 @@ export default function ProfileBanner({ userData }) {
                         className="cancel-button"
                         onClick={(e) => {
                             e.preventDefault();
-                            dispatch(changeUserNames(userData.firstName, userData.lastName))
                             dispatch(switchUpDate(false));
                             dispatch(userNoEditMode());
                         }}
@@ -48,12 +76,11 @@ export default function ProfileBanner({ userData }) {
         </div>
     ) : (
         <div className="header">
-            <h1>Welcome back<br />{userData.firstName + ' ' + userData.lastName} !</h1>
+            <h1>Welcome back<br />{userFirstName + ' ' + userLastName} !</h1>
             <button 
                 className="edit-button"
                 onClick={(e) => {
                     e.preventDefault();
-                    //dispatch(switchUpDate(true));
                     dispatch(userEditMode());
                 }}
             >

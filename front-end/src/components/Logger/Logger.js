@@ -1,23 +1,15 @@
 import React from 'react'
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-
+import { useSelector, useDispatch } from "react-redux";
 import '../../styles/Logger/Logger.css'
-
 import { TbUserCircle } from "react-icons/tb";
 import { FaSignOutAlt } from "react-icons/fa";
-
 import { Link } from 'react-router-dom'
 import { userLogOut, switchUpDate } from '../Store/Store';
 
-
 export default function Logger() {
-    const isLogged = useSelector((state) => state.isLogged);
-
     const dispatch = useDispatch();
-
+    const isLogged = useSelector((state) => state.isLogged);
     const userFirstName = useSelector((state) => state.userFirstName);
-
     return isLogged ? (
         <div className='signout-design'>
             <Link className="main-nav-item" to={'/profile'}>

@@ -1,9 +1,6 @@
 import React from 'react'
-
 import Header from '../Header/Header.js';
 import Footer from '../Footer/Footer.js';
-
-
 import '../../styles/Home/Home.css'
 import iconchat from '../../assets/icon-chat.png'
 import iconmoney from '../../assets/icon-money.png'
@@ -47,8 +44,7 @@ function Feature({ data }) {
 
 export default function Home() {
     return(
-        <div className='html'>
-          <div className='body'>
+        <div className='html body'>
             <Header />
             <main>
                 <div className="hero">
@@ -70,7 +66,6 @@ export default function Home() {
                 </section>
             </main>
             <Footer />
-          </div>
         </div>
     )
 }
