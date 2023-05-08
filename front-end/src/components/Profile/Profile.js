@@ -42,8 +42,8 @@ function Account({ data }) {
     )
 }
 
-function applyToken(token) {
-    return fetch(process.env.REACT_APP_PORT + '/user/profile', {
+async function applyToken(token) {
+    return await fetch(process.env.REACT_APP_PORT + '/user/profile', {
       method: 'POST',
       headers: {"Content-Type": "application/json", "Authorization": "Bearer " + token}
     })
@@ -59,7 +59,7 @@ export default function Profile() {
           .then(res => res.json())
           .then(
             (result) => {
-                dispatch(setUserData(result.body.email, result.body.id, result.body.firstName, result.body.lastName))
+                dispatch(setUserData(result.body))
             }
         )
   

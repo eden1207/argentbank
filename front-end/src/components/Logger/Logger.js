@@ -4,23 +4,28 @@ import '../../styles/Logger/Logger.css'
 import { TbUserCircle } from "react-icons/tb";
 import { FaSignOutAlt } from "react-icons/fa";
 import { Link } from 'react-router-dom'
-import { userLogOut, switchUpDate } from '../Store/Store';
+import { userLogOut, switchUpDate, userNoEditMode, setUserToken } from '../Store/Store';
 
 export default function Logger() {
     const dispatch = useDispatch();
     const isLogged = useSelector((state) => state.isLogged);
-    const userFirstName = useSelector((state) => state.userFirstName);
+    const userData = useSelector((state) => state.userData);
+    const isChecked = useSelector((state) => state.isChecked);
     return isLogged ? (
         <div className='signout-design'>
             <Link className="main-nav-item" to={'/profile'}>
                 <TbUserCircle />
-                {userFirstName}
+                {userData.firstName}
             </Link>
             <Link 
                 className="main-nav-item" 
                 onClick={() => {
                     dispatch(userLogOut());
                     dispatch(switchUpDate(false));
+                    dispatch(userNoEditMode());
+                    if(isChecked === false) {
+                        dispatch(setUserToken(''));
+                    }
                 }}
                 to={'/'}
             >

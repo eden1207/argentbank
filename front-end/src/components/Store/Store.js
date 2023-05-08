@@ -3,18 +3,17 @@ import { createStore } from "redux";
 //state
 
 const initialState = {
+  userToken: '',
+
+  userData: {},
+  isChecked: false,
+
   isLogged: false,
   isEditName: false,
-  isAuthorized: null,
-  userEmail: '',
-  userPassword: '',
-  userId: '',
-  userToken: '',
-  userFirstName: '',
-  userLastName: '',
+
+  isUpDating: false,
   userFistNameEdited: '',
   userLastNameEdited: '',
-  upDate: false,
 };
 
 // actions creators
@@ -27,9 +26,14 @@ export const userLogOut = () => ({ type: "userLogOut" });
 
 
 /**ok */
-export const switchUpDate = (upDate) => ({ 
+export const switchUpDate = (isUpDating) => ({ 
   type: "switchUpDate",
-  upDate: upDate, 
+  isUpDating: isUpDating, 
+});
+
+export const checkBox = (isChecked) => ({ 
+  type: "checkBox",
+  isChecked: isChecked, 
 });
 
 /**ok */
@@ -52,18 +56,9 @@ export const setUserToken = (userToken) => ({
 });
 
 /**ok */
-export const setIsAuthorized = (isAuthorized) => ({ 
-  type: "setIsAuthorized",
-  isAuthorized: isAuthorized, 
-});
-
-/**ok */
-export const setUserData = (userEmail, userId, userFirstName, userLastName) => ({ 
+export const setUserData = (userData) => ({ 
   type: "setUserData",
-  userEmail: userEmail, 
-  userId: userId,
-  userFirstName: userFirstName,
-  userLastName: userLastName,
+  userData: userData, 
 });
 
 function reducer(state = initialState, action) {
@@ -100,34 +95,27 @@ function reducer(state = initialState, action) {
     };
   }
 
-  if (action.type === "setIsAuthorized") {
-    const isAuthorized = action.isAuthorized;
-    return {
-      ...state,
-      isAuthorized: isAuthorized,
-    };
-  }
-
   if (action.type === "setUserData") {
-    const userEmail = action.userEmail;
-    const userId = action.userId;
-    const userFirstName = action.userFirstName;
-    const userLastName = action.userLastName;
-
+    const userData = action.userData;
     return {
       ...state,
-      userEmail: userEmail,
-      userId: userId,
-      userFirstName: userFirstName,
-      userLastName: userLastName,
+      userData: userData,
     };
   }
 
   if (action.type === "switchUpDate") {
-    const upDate = action.upDate;
+    const isUpDating = action.isUpDating;
     return {
       ...state,
-      upDate: upDate,
+      isUpDating: isUpDating,
+    };
+  }
+
+  if (action.type === "checkBox") {
+    const isChecked = action.isChecked;
+    return {
+      ...state,
+      isChecked: isChecked,
     };
   }
 

@@ -15,27 +15,26 @@ export default function ProfileBanner() {
     const dispatch = useDispatch();
     const userFirstNameEdited = useSelector((state) => state.userFirstNameEdited);
     const userLastNameEdited = useSelector((state) => state.userLastNameEdited);
-    const userFirstName = useSelector((state) => state.userFirstName);
-    const userLastName = useSelector((state) => state.userLastName);
+    const userData = useSelector((state) => state.userData);
     const userToken = useSelector((state) => state.userToken);
-    const upDate = useSelector((state) => state.upDate);
+    const isUpDating = useSelector((state) => state.isUpDating);
     const isEditName = useSelector((state) => state.isEditName);
     const [inputfirstname, setInputFirstname] = useState('');
     const [inputsurname, setInputSurname] = useState('');
 
     useEffect(() => {
 
-        if(upDate) {
+        if(isUpDating) {
             putUpDateData(userFirstNameEdited, userLastNameEdited, userToken)
             .then(res => res.json())
             .then(
               (result) => {
-                  dispatch(setUserData(result.body.email, result.body.id, result.body.firstName, result.body.lastName))
+                  dispatch(setUserData(result.body))
               }
           )
         }
   
-    }, [dispatch, userFirstNameEdited, userLastNameEdited, userToken, upDate])
+    }, [dispatch, userFirstNameEdited, userLastNameEdited, userToken, isUpDating])
 
     return isEditName ? (
         <div>
@@ -76,7 +75,7 @@ export default function ProfileBanner() {
         </div>
     ) : (
         <div className="header">
-            <h1>Welcome back<br />{userFirstName + ' ' + userLastName} !</h1>
+            <h1>Welcome back<br />{userData.firstName + ' ' + userData.lastName} !</h1>
             <button 
                 className="edit-button"
                 onClick={(e) => {
