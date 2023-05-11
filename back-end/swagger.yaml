@@ -8,14 +8,6 @@ host: localhost:3001
 basePath: /api/v1
 schemes:
   - http
-
-
-
-
-
-
-
-
 paths:
   /user/login:
     post:
@@ -118,9 +110,6 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-
-
-
   /user/id/accounts:
     get:
       security:
@@ -246,28 +235,11 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-
-
-
-
-
-
-
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
-
-
-
-
-
-
-
-
-
-
 definitions:
   User:
     properties:
@@ -317,11 +289,6 @@ definitions:
         type: string
       lastName:
         type: string
-
-
-
-
-  
   ApiAccountsResponse:
     type: object
     properties:
