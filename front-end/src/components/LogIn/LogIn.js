@@ -56,14 +56,14 @@ export default function LogIn() {
                           className="sign-in-button"
                           onClick={(e) => {
                             e.preventDefault();
-                            const condition1 = isChecked === false;
-                            const condition2 = isChecked === true && userToken.length ===0;
-                            if(condition1 || condition2) {
+                            const remenberMeNotChecked = isChecked === false;
+                            const remenberMeCheckedButNoAuthentication = isChecked === true && userToken.length ===0;
+                            if(remenberMeNotChecked || remenberMeCheckedButNoAuthentication) {
                               userIdentify(email, password)
                                 .then(res => res.json())
                                 .then(
                                   (result) => {
-                                    if(result.status !== 400){
+                                    if(result.status === 200){
                                       const token = result.body.token;
                                       dispatch(setUserToken(token));
                                       navigate("/profile")
