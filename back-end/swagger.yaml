@@ -8,6 +8,14 @@ host: localhost:3001
 basePath: /api/v1
 schemes:
   - http
+
+
+
+
+
+
+
+
 paths:
   /user/login:
     post:
@@ -110,11 +118,156 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+
+
+
+  /user/id/accounts:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Accounts API
+      description: API for fetching a user accounts
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User accounts retrieved successully
+          schema:
+            $ref: '#/definitions/ApiAccountsResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/id/accounts/id:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Account API
+      description: API for fetching a user account details
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User account details retrieved successully
+          schema:
+            $ref: '#/definitions/ApiAccountResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/id/accounts/id/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Transactions API
+      description: API for fetching a user transactions
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transactions retrieved successully
+          schema:
+            $ref: '#/definitions/ApiTransactionsResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /user/id/accounts/id/transactions/id:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Transaction API
+      description: API for fetching a user transaction details
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transaction details retrieved successully
+          schema:
+            $ref: '#/definitions/ApiTransactionResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Transaction API
+      description: API for updating a user transaction details
+      parameters:
+        - in: header
+          name: Authorization
+          description: Attach Bearer JWT token
+          required: true
+        - in: body
+          name: body
+          description: Update user transaction attributes
+          required: true
+          schema:
+            $ref: '#/definitions/ApiTransactionUpDate'
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: User transaction details retrieved successully
+          schema:
+            $ref: '#/definitions/ApiTransactionResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+
+
+
+
+
+
+
 securityDefinitions:
   Bearer:
     type: apiKey
     name: Authorization
     in: header
+
+
+
+
+
+
+
+
+
+
 definitions:
   User:
     properties:
@@ -163,4 +316,114 @@ definitions:
       firstName:
         type: string
       lastName:
+        type: string
+
+
+
+
+  
+  ApiAccountsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: array
+        items:
+          type: object
+          properties:
+            accountId:
+              type: string
+            accountNumber:
+              type: string
+            accountName:
+              type: string
+            accountAmount:
+              type: string
+            accountType:
+              type: string
+  ApiAccountResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          accountId:
+            type: string
+          accountNumber:
+            type: string
+          accountName:
+            type: string
+          accountAmount:
+            type: string
+          accountType:
+            type: string
+  ApiTransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: array
+        items:
+          type: object
+          properties:
+            transactionId:
+              type: string
+            transactionDate:
+              type: string
+            transactionDescription:
+              type: string
+            transactionAmount:
+              type: string
+            transactionBalance:
+              type: string
+            transactionType:
+              type: string
+            transactionCategorie:
+              type: string
+            transactionNotes:
+              type: string
+  ApiTransactionResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          transactionId:
+            type: string
+          transactionDate:
+            type: string
+          transactionDescription:
+            type: string
+          transactionAmount:
+            type: string
+          transactionBalance:
+            type: string
+          transactionType:
+            type: string
+          transactionCategorie:
+            type: string
+          transactionNotes:
+            type: string
+  ApiTransactionUpDate:
+    type: object
+    properties:
+      transactionId:
+        type: string
+      transactionCategorie:
+        type: string
+      transactionNotes:
         type: string
