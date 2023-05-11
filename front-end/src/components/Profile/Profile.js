@@ -6,6 +6,9 @@ import Footer from '../Footer/Footer.js';
 import ProfileBanner from '../ProfileBanner/ProfileBanner.js';
 import '../../styles/Home/Home.css'
 
+/**
+ * Array of objects containing the data of the three accounts of the profile page
+ */
 const accountData = [
     {
         'id': 'accountData1',
@@ -27,6 +30,10 @@ const accountData = [
     }
 ];
 
+/**
+ * Component used to display the three accounts of the profile page
+ * @param {Object} data
+ */
 function Account({ data }) {
     return (
         <section className="account">
@@ -42,6 +49,10 @@ function Account({ data }) {
     )
 }
 
+/**
+ * Function to make a API call to obtain user data thanks to the token from the back-end
+ * @param {string} token 
+ */
 async function applyToken(token) {
     return await fetch(process.env.REACT_APP_PORT + '/user/profile', {
       method: 'POST',
@@ -49,7 +60,14 @@ async function applyToken(token) {
     })
 }
 
+/**
+ * Component displaying the user profile page
+ */
 export default function Profile() {
+    /**
+     * Function dispatch to send actions to the reducer and state to obtain the user token 
+     * after authentication
+     */
     const dispatch = useDispatch();
     const userToken = useSelector((state) => state.userToken);
 

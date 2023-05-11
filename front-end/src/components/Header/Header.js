@@ -1,15 +1,11 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 import Logger from '../Logger/Logger.js';
-
 import '../../styles/Header/Header.css'
 import argentBankLogo from '../../assets/argentBankLogo.png'
 
-import { Link } from 'react-router-dom'
-
 
 export default function Header() {
-
     return(
         <nav className="main-nav">
             <Link className="main-nav-logo" to={'/'}>

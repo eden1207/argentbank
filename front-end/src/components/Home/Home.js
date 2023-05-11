@@ -6,6 +6,9 @@ import iconchat from '../../assets/icon-chat.png'
 import iconmoney from '../../assets/icon-money.png'
 import iconsecurity from '../../assets/icon-security.png'
 
+/**
+ * Array of objects containing the data of the three features of the home page
+ */
 const featuresData = [
     {
         'id': 'featuresData1',
@@ -30,7 +33,10 @@ const featuresData = [
     }
 ];
 
-
+/**
+ * Component used to display the three features of the home page
+ * @param {Object} data
+ */
 function Feature({ data }) {
     return (
         <div className="feature-item">
@@ -41,7 +47,9 @@ function Feature({ data }) {
     )
 }
 
-
+/**
+ * Component displaying the home page
+ */
 export default function Home() {
     return(
         <div className='html body'>

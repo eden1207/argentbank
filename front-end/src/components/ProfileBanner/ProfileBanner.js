@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from "react-redux";
 import { userEditMode, userNoEditMode, changeUserNames, switchUpDate, setUserData } from '../Store/Store';
 
-
+/**
+ * Function to make a API call, to change both user lastname and firstname and to obtain 
+ * user data thanks to the token from the back-end
+ * @param {string} firstname 
+ * @param {string} surname 
+ * @param {string} token 
+ */
 function putUpDateData(firstname, surname, token) {
     return fetch(process.env.REACT_APP_PORT + '/user/profile', {
       method: 'PUT',
@@ -11,16 +17,38 @@ function putUpDateData(firstname, surname, token) {
     })
 }
 
+/**
+ * Component displaying the welcome message of the user profile page
+ */
 export default function ProfileBanner() {
+    /**
+     * Function dispatch to send actions to the reducer and state to obtain the user token 
+     * after authentication
+     */
     const dispatch = useDispatch();
-    const userFirstNameEdited = useSelector((state) => state.userFirstNameEdited);
-    const userLastNameEdited = useSelector((state) => state.userLastNameEdited);
-    const userData = useSelector((state) => state.userData);
-    const userToken = useSelector((state) => state.userToken);
-    const isUpDating = useSelector((state) => state.isUpDating);
-    const isEditName = useSelector((state) => state.isEditName);
+    /**
+     * States to edit the user firstname and lastname
+     * The first and second state are made to get the name written in the inputs
+     * The other ones are used to obtain the names registred in the back-end 
+     */
     const [inputfirstname, setInputFirstname] = useState('');
     const [inputsurname, setInputSurname] = useState('');
+    const userFirstNameEdited = useSelector((state) => state.userFirstNameEdited);
+    const userLastNameEdited = useSelector((state) => state.userLastNameEdited);
+    /**
+     * States to obtain the user token and user data after authentication
+     */
+    const userData = useSelector((state) => state.userData);
+    const userToken = useSelector((state) => state.userToken);
+    /**
+     * State indicated if the program is updating the names or not
+     * If it is true a fetch call is made to save the new names updated
+     */
+    const isUpDating = useSelector((state) => state.isUpDating);
+    /**
+     * State to display the welcome message of the profile banner or the edit interface
+     */
+    const isEditName = useSelector((state) => state.isEditName);
 
     useEffect(() => {
 
